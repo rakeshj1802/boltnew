@@ -10,7 +10,7 @@ import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/boltnew">
       <div className="flex flex-col min-h-screen bg-dark-800 text-gray-100">
         <Header />
         <main className="flex-grow">
