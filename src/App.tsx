@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import MovieDetailPage from './pages/MovieDetailPage';
 import CategoryPage from './pages/CategoryPage';
 import SearchResultsPage from './pages/SearchResultsPage';
+import AdminPage from './pages/AdminPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/movie/:id" element={<MovieDetailPage />} />
             <Route path="/category/:type" element={<CategoryPage />} />
             <Route path="/search" element={<SearchResultsPage />} />
+            <Route path="/admin" element={<AdminPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

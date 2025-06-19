@@ -186,6 +186,24 @@ export const movies: MovieType[] = [
     category: "dubbed",
     isTrending: true,
     isNew: false
+  },
+  // ADD NEW MOVIES HERE - Example:
+  {
+    id: "11",
+    title: "Spider-Man: No Way Home",
+    year: 2021,
+    poster: "https://images.pexels.com/photos/4587959/pexels-photo-4587959.jpeg?auto=compress&cs=tinysrgb&w=600",
+    rating: 8.2,
+    genres: ["Action", "Adventure", "Fantasy"],
+    language: "English",
+    quality: ["720p", "1080p", "4K"],
+    synopsis: "With Spider-Man's identity now revealed, Peter asks Doctor Strange for help. When a spell goes wrong, dangerous foes from other worlds start to appear, forcing Peter to discover what it truly means to be Spider-Man.",
+    director: "Jon Watts",
+    actors: ["Tom Holland", "Zendaya", "Benedict Cumberbatch", "Jacob Batalon", "Jon Favreau"],
+    duration: "2h 28min",
+    category: "hollywood",
+    isTrending: true,
+    isNew: true
   }
 ];
 
