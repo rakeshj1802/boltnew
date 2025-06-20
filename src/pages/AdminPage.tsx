@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, Eye, LogOut, Shield, Users, Film, TrendingUp } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { MovieType } from '../data/movieData';
 import { useMovies } from '../hooks/useMovies';
 import { addMovie, deleteMovie } from '../utils/movieStore';
 import AdminPanel from '../components/admin/AdminPanel';
 import MovieCard from '../components/movies/MovieCard';
-import AdminLogin from '../components/auth/AdminLogin';
 
 const AdminPage: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showAddPanel, setShowAddPanel] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const navigate = useNavigate();
   
   // Use real-time movie data
   const movies = useMovies();
@@ -33,24 +34,22 @@ const AdminPage: React.FC = () => {
           // Session expired
           localStorage.removeItem('moviehub_admin_session');
           localStorage.removeItem('moviehub_admin_login_time');
+          navigate('/admin');
         }
+      } else {
+        navigate('/admin');
       }
       setIsLoading(false);
     };
 
     checkAuth();
-  }, []);
-
-  const handleLogin = (success: boolean) => {
-    if (success) {
-      setIsAuthenticated(true);
-    }
-  };
+  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem('moviehub_admin_session');
     localStorage.removeItem('moviehub_admin_login_time');
     setIsAuthenticated(false);
+    navigate('/admin');
   };
 
   const handleAddMovie = (newMovie: MovieType) => {
@@ -79,9 +78,9 @@ const AdminPage: React.FC = () => {
     );
   }
 
-  // Show login form if not authenticated
+  // If not authenticated, this will be handled by useEffect redirect
   if (!isAuthenticated) {
-    return <AdminLogin onLogin={handleLogin} />;
+    return null;
   }
 
   // Show admin dashboard if authenticated

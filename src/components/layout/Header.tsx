@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, X, Film, ChevronDown, Shield } from 'lucide-react';
+import { Search, Menu, X, Film, ChevronDown, Shield, MessageSquare } from 'lucide-react';
 import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 
 const Header: React.FC = () => {
@@ -149,10 +149,17 @@ const Header: React.FC = () => {
             >
               Trending
             </Link>
+            <Link
+              to="/request-movie"
+              className="flex items-center gap-1 hover:text-primary-500 transition-colors text-sm font-medium"
+            >
+              <MessageSquare size={16} />
+              Request
+            </Link>
             {/* Admin Link - Only show if authenticated */}
             {isAdminAuthenticated && (
               <Link
-                to="/admin"
+                to="/admin-dashboard"
                 className="flex items-center gap-1 hover:text-primary-500 transition-colors text-sm font-medium"
               >
                 <Shield size={16} />
@@ -213,10 +220,18 @@ const Header: React.FC = () => {
                   {category.name}
                 </Link>
               ))}
+              <Link
+                to="/request-movie"
+                className="py-2 hover:text-primary-500 transition-colors flex items-center gap-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <MessageSquare size={16} />
+                Request Movie
+              </Link>
               {/* Admin Link in Mobile Menu - Only show if authenticated */}
               {isAdminAuthenticated && (
                 <Link
-                  to="/admin"
+                  to="/admin-dashboard"
                   className="py-2 hover:text-primary-500 transition-colors flex items-center gap-2"
                   onClick={() => setIsMenuOpen(false)}
                 >

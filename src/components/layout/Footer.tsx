@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Film, Instagram, Twitter, Facebook, Mail, Shield } from 'lucide-react';
+import { Film, Instagram, Twitter, Facebook, Mail, Shield, MessageSquare } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -99,9 +99,10 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link 
-                  to="/contact-us"
-                  className="text-gray-400 hover:text-primary-500 transition-colors text-sm"
+                  to="/request-movie"
+                  className="text-gray-400 hover:text-primary-500 transition-colors text-sm flex items-center gap-1"
                 >
+                  <MessageSquare size={14} />
                   Request Movie
                 </Link>
               </li>
