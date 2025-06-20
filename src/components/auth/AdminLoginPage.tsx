@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Lock, User, Eye, EyeOff, Shield, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -16,6 +16,23 @@ const AdminLoginPage: React.FC = () => {
     username: 'Admin2002',
     password: 'admin@944'
   };
+
+  // Check if already authenticated
+  useEffect(() => {
+    const session = localStorage.getItem('moviehub_admin_session');
+    const loginTime = localStorage.getItem('moviehub_admin_login_time');
+    
+    if (session === 'authenticated' && loginTime) {
+      const currentTime = Date.now();
+      const sessionTime = parseInt(loginTime);
+      const sessionDuration = 24 * 60 * 60 * 1000; // 24 hours
+      
+      if (currentTime - sessionTime < sessionDuration) {
+        // Already authenticated, redirect to dashboard
+        navigate('/admin-dashboard');
+      }
+    }
+  }, [navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,7 +63,7 @@ const AdminLoginPage: React.FC = () => {
       // Redirect to admin dashboard
       navigate('/admin-dashboard');
     } else {
-      setError('Invalid username or password');
+      setError('Invalid username or password. Please check your credentials.');
     }
 
     setIsLoading(false);
@@ -72,6 +89,15 @@ const AdminLoginPage: React.FC = () => {
             </div>
             <h1 className="text-2xl font-bold text-white mb-2">Admin Login</h1>
             <p className="text-gray-400">Enter your credentials to access the admin panel</p>
+          </div>
+
+          {/* Demo Credentials Info */}
+          <div className="bg-blue-600/20 border border-blue-600/30 rounded-lg p-3 mb-6">
+            <p className="text-blue-400 text-sm text-center">
+              <strong>Demo Credentials:</strong><br />
+              Username: Admin2002<br />
+              Password: admin@944
+            </p>
           </div>
 
           {/* Login Form */}
@@ -151,7 +177,7 @@ const AdminLoginPage: React.FC = () => {
           {/* Security Notice */}
           <div className="mt-6 p-4 bg-dark-700/50 rounded-lg">
             <p className="text-xs text-gray-400 text-center">
-              🔒 This is a secure admin area. Unauthorized access is prohibited.
+              🔒 This is a secure admin area. Session expires after 24 hours.
             </p>
           </div>
         </div>
