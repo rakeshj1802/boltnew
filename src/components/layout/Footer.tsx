@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Film, Instagram, Twitter, Facebook, Mail } from 'lucide-react';
+import { Film, Instagram, Twitter, Facebook, Mail, Shield } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -57,16 +57,64 @@ const Footer: React.FC = () => {
           <div className="col-span-1">
             <h3 className="text-lg font-medium mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {['Home', 'Trending', 'New Releases', 'Most Downloaded', 'Top Rated', 'Request Movie'].map((link, index) => (
-                <li key={index}>
-                  <Link 
-                    to={link === 'Home' ? '/' : `/${link.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="text-gray-400 hover:text-primary-500 transition-colors text-sm"
-                  >
-                    {link}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link 
+                  to="/"
+                  className="text-gray-400 hover:text-primary-500 transition-colors text-sm"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/category/trending"
+                  className="text-gray-400 hover:text-primary-500 transition-colors text-sm"
+                >
+                  Trending
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/category/latest"
+                  className="text-gray-400 hover:text-primary-500 transition-colors text-sm"
+                >
+                  New Releases
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/category/hollywood"
+                  className="text-gray-400 hover:text-primary-500 transition-colors text-sm"
+                >
+                  Most Downloaded
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/category/bollywood"
+                  className="text-gray-400 hover:text-primary-500 transition-colors text-sm"
+                >
+                  Top Rated
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/contact-us"
+                  className="text-gray-400 hover:text-primary-500 transition-colors text-sm"
+                >
+                  Request Movie
+                </Link>
+              </li>
+              {/* Admin Login Link */}
+              <li>
+                <Link 
+                  to="/admin"
+                  className="text-gray-400 hover:text-primary-500 transition-colors text-sm flex items-center gap-1"
+                >
+                  <Shield size={14} />
+                  Admin Login
+                </Link>
+              </li>
             </ul>
           </div>
           

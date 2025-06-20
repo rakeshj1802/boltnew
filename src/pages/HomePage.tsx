@@ -2,22 +2,21 @@ import React from 'react';
 import HeroSection from '../components/ui/HeroSection';
 import MovieGrid from '../components/movies/MovieGrid';
 import AdManager from '../components/ads/AdManager';
-import { movies, getMoviesByCategory } from '../data/movieData';
+import { useMovies, useMoviesByCategory } from '../hooks/useMovies';
 
 const HomePage: React.FC = () => {
+  // Use real-time movie data
+  const allMovies = useMovies();
+  
   // Get featured movies (trending ones)
-  const featuredMovies = movies.filter(movie => movie.isTrending).slice(0, 5);
+  const featuredMovies = allMovies.filter(movie => movie.isTrending).slice(0, 5);
   
-  // Get latest movies
-  const latestMovies = getMoviesByCategory('latest');
-  
-  // Get trending movies
-  const trendingMovies = getMoviesByCategory('trending');
-  
-  // Get movies by categories
-  const hollywoodMovies = getMoviesByCategory('hollywood');
-  const bollywoodMovies = getMoviesByCategory('bollywood');
-  const southIndianMovies = getMoviesByCategory('south-indian');
+  // Get movies by categories with real-time updates
+  const latestMovies = useMoviesByCategory('latest');
+  const trendingMovies = useMoviesByCategory('trending');
+  const hollywoodMovies = useMoviesByCategory('hollywood');
+  const bollywoodMovies = useMoviesByCategory('bollywood');
+  const southIndianMovies = useMoviesByCategory('south-indian');
   
   return (
     <div className="min-h-screen">

@@ -1,14 +1,22 @@
 import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Star, Clock, Calendar, Download, ArrowLeft, User, Film, Globe } from 'lucide-react';
-import { getMovieById, getMoviesByCategory } from '../data/movieData';
+import { useMovies, useMoviesByCategory } from '../hooks/useMovies';
+import { getMovieById } from '../utils/movieStore';
 import MovieGrid from '../components/movies/MovieGrid';
 import AdManager from '../components/ads/AdManager';
 
 const MovieDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  
+  // Get the specific movie
   const movie = getMovieById(id || '');
+  
+  // Get related movies with real-time updates
+  const relatedMovies = useMoviesByCategory(movie?.category || '')
+    .filter(m => m.id !== movie?.id)
+    .slice(0, 6);
   
   useEffect(() => {
     // Scroll to top when component mounts
@@ -23,11 +31,6 @@ const MovieDetailPage: React.FC = () => {
   if (!movie) {
     return null; // Will redirect in useEffect
   }
-  
-  // Get related movies from same category
-  const relatedMovies = getMoviesByCategory(movie.category)
-    .filter(m => m.id !== movie.id)
-    .slice(0, 6);
   
   return (
     <div className="min-h-screen pb-12">
@@ -168,7 +171,7 @@ const MovieDetailPage: React.FC = () => {
           <AdManager type="banner" id="movie-detail-banner" />
         </div>
         
-        {/* Related Movies */}
+        {/* Related Movies - Now with real-time updates */}
         <MovieGrid 
           movies={relatedMovies} 
           title="You May Also Like" 

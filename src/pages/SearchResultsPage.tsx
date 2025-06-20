@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { searchMovies } from '../data/movieData';
+import { useMovieSearch } from '../hooks/useMovies';
 import MovieGrid from '../components/movies/MovieGrid';
 import AdManager from '../components/ads/AdManager';
 import { Search } from 'lucide-react';
@@ -8,14 +8,11 @@ import { Search } from 'lucide-react';
 const SearchResultsPage: React.FC = () => {
   const location = useLocation();
   const query = new URLSearchParams(location.search).get('q') || '';
-  const [searchQuery, setSearchQuery] = useState(query);
-  const [results, setResults] = useState(searchMovies(query));
+  
+  // Use real-time search results
+  const results = useMovieSearch(query);
   
   useEffect(() => {
-    // Update results when query changes
-    setSearchQuery(query);
-    setResults(searchMovies(query));
-    
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
   }, [query]);
@@ -59,7 +56,7 @@ const SearchResultsPage: React.FC = () => {
           <AdManager type="banner" id="search-top-banner" />
         </div>
         
-        {/* Results Grid */}
+        {/* Results Grid - Now with real-time updates */}
         <MovieGrid movies={results} />
         
         {/* Ad Banner */}

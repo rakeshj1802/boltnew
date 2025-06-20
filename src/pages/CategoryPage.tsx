@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getMoviesByCategory } from '../data/movieData';
+import { useMoviesByCategory } from '../hooks/useMovies';
 import MovieGrid from '../components/movies/MovieGrid';
 import AdManager from '../components/ads/AdManager';
 
 const CategoryPage: React.FC = () => {
   const { type } = useParams<{ type: string }>();
-  const movies = getMoviesByCategory(type || '');
+  
+  // Use real-time movie data by category
+  const movies = useMoviesByCategory(type || '');
   
   useEffect(() => {
     // Scroll to top when component mounts
@@ -72,7 +74,7 @@ const CategoryPage: React.FC = () => {
           <AdManager type="banner" id="category-top-banner" />
         </div>
         
-        {/* Movies Grid */}
+        {/* Movies Grid - Now with real-time updates */}
         <MovieGrid movies={movies} />
         
         {/* Ad Banner */}

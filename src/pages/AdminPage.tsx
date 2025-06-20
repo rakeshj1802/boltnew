@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, Eye, LogOut, Shield, Users, Film, TrendingUp } from 'lucide-react';
-import { movies as initialMovies, MovieType } from '../data/movieData';
+import { MovieType } from '../data/movieData';
+import { useMovies } from '../hooks/useMovies';
+import { addMovie, deleteMovie } from '../utils/movieStore';
 import AdminPanel from '../components/admin/AdminPanel';
 import MovieCard from '../components/movies/MovieCard';
 import AdminLogin from '../components/auth/AdminLogin';
@@ -8,9 +10,11 @@ import AdminLogin from '../components/auth/AdminLogin';
 const AdminPage: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [movies, setMovies] = useState<MovieType[]>(initialMovies);
   const [showAddPanel, setShowAddPanel] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  
+  // Use real-time movie data
+  const movies = useMovies();
 
   // Check authentication on component mount
   useEffect(() => {
@@ -50,14 +54,16 @@ const AdminPage: React.FC = () => {
   };
 
   const handleAddMovie = (newMovie: MovieType) => {
-    setMovies(prev => [newMovie, ...prev]);
-    // In a real app, you would save this to a database
+    // Add movie to the centralized store - this will automatically update all components
+    addMovie(newMovie);
     console.log('New movie added:', newMovie);
   };
 
   const handleDeleteMovie = (id: string) => {
-    if (confirm('Are you sure you want to delete this movie?')) {
-      setMovies(prev => prev.filter(movie => movie.id !== id));
+    if (confirm('Are you sure you want to delete this movie? This will remove it from the entire website.')) {
+      // Delete movie from the centralized store - this will automatically update all components
+      deleteMovie(id);
+      console.log('Movie deleted:', id);
     }
   };
 
@@ -107,7 +113,7 @@ const AdminPage: React.FC = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        {/* Stats Cards */}
+        {/* Stats Cards - Now with real-time data */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-dark-800 rounded-lg p-6 border border-dark-700">
             <div className="flex items-center justify-between">
@@ -185,6 +191,14 @@ const AdminPage: React.FC = () => {
               Add Movie
             </button>
           </div>
+        </div>
+
+        {/* Real-time Update Indicator */}
+        <div className="bg-green-600/20 border border-green-600/30 rounded-lg p-3 mb-6">
+          <p className="text-green-400 text-sm flex items-center gap-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            Live Data: Changes made here will instantly reflect across the entire website
+          </p>
         </div>
 
         {/* Movies Display */}
