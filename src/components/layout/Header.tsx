@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, X, Film, ChevronDown } from 'lucide-react';
+import { Search, Menu, X, Film, ChevronDown, Shield } from 'lucide-react';
 import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 
 const Header: React.FC = () => {
@@ -9,12 +9,41 @@ const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const categoryRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   useOnClickOutside(searchRef, () => setIsSearchFocused(false));
   useOnClickOutside(categoryRef, () => setIsCategoryOpen(false));
+
+  // Check admin authentication status
+  useEffect(() => {
+    const checkAdminAuth = () => {
+      const session = localStorage.getItem('moviehub_admin_session');
+      const loginTime = localStorage.getItem('moviehub_admin_login_time');
+      
+      if (session === 'authenticated' && loginTime) {
+        const currentTime = Date.now();
+        const sessionTime = parseInt(loginTime);
+        const sessionDuration = 24 * 60 * 60 * 1000; // 24 hours
+        
+        if (currentTime - sessionTime < sessionDuration) {
+          setIsAdminAuthenticated(true);
+        } else {
+          setIsAdminAuthenticated(false);
+        }
+      } else {
+        setIsAdminAuthenticated(false);
+      }
+    };
+
+    checkAdminAuth();
+    
+    // Check every minute for session expiry
+    const interval = setInterval(checkAdminAuth, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -120,6 +149,16 @@ const Header: React.FC = () => {
             >
               Trending
             </Link>
+            {/* Admin Link - Only show if authenticated */}
+            {isAdminAuthenticated && (
+              <Link
+                to="/admin"
+                className="flex items-center gap-1 hover:text-primary-500 transition-colors text-sm font-medium"
+              >
+                <Shield size={16} />
+                Admin
+              </Link>
+            )}
           </nav>
 
           {/* Search */}
@@ -174,6 +213,17 @@ const Header: React.FC = () => {
                   {category.name}
                 </Link>
               ))}
+              {/* Admin Link in Mobile Menu - Only show if authenticated */}
+              {isAdminAuthenticated && (
+                <Link
+                  to="/admin"
+                  className="py-2 hover:text-primary-500 transition-colors flex items-center gap-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Shield size={16} />
+                  Admin Panel
+                </Link>
+              )}
             </nav>
           </div>
         </div>
