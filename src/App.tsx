@@ -7,6 +7,12 @@ import MovieDetailPage from './pages/MovieDetailPage';
 import CategoryPage from './pages/CategoryPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import AdminPage from './pages/AdminPage';
+import FAQPage from './pages/FAQPage';
+import ContactPage from './pages/ContactPage';
+import TermsPage from './pages/TermsPage';
+import PrivacyPage from './pages/PrivacyPage';
+import AboutPage from './pages/AboutPage';
+import DMCAPage from './pages/DMCAPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
@@ -21,6 +27,12 @@ function App() {
             <Route path="/category/:type" element={<CategoryPage />} />
             <Route path="/search" element={<SearchResultsPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/contact-us" element={<ContactPage />} />
+            <Route path="/terms-of-service" element={<TermsPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPage />} />
+            <Route path="/about-us" element={<AboutPage />} />
+            <Route path="/dmca" element={<DMCAPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
